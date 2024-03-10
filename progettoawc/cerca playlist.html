@@ -1,0 +1,249 @@
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <script src="https://kit.fontawesome.com/9a13ec74f3.js" crossorigin="anonymous"></script>
+    <script src="./js/registrazione.js"></script>
+    <script src="./js/AccessToken.js"></script>
+    <script src="./js/functions.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    <title>crea playlist</title>
+</head>
+
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark ">
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page">
+                        <i class="fa-solid fa-music"></i> </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./PaginaPersonale.html" id="profilo"> <i class="fa-solid fa-user"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./home.html"> <i class="fa-sharp fa-solid fa-house-user"></i> Home </i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./cerca playlist.html"><i class="fa-solid fa-plus"></i> Crea Playlist </i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./playlistPubbliche.html"><i class="fas fa-globe-europe"></i> Playlist
+                        Pubbliche </i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./comunità.html"><i class="fas fa-globe-europe"></i>
+                      comunità </i>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="./amici.html"><i class="fas fa-globe-europe"></i>
+                        i miei amici </i>
+                    </a>
+                  </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid titolo">
+        <p class="text-center fs-1 fw-bold">Crea una nuova playlist</p>
+    </div>
+    <div class="container mt-3">
+        <form>
+            <div class="input-group input-group-lg">
+                <span class="input-group-text" id="inputGroup-sizing-lg">Nome Playlist</span>
+                <input type="text" id="nomePlaylist" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-lg">
+            </div>
+            <br>
+            <div class="input-group input-group-lg">
+                <span class="input-group-text" id="inputGroup-sizing-lg">descrivi</span>
+                <input type="text" id="descrizione" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-lg">
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary d-grid gap-2 col-6 mx-auto" onclick="creaPlaylist()">Crea la
+                playlist</button>
+
+            <br>
+
+            <p class="text-lg-start fs-4 fw-bold">aggiungi Canzoni:</p>
+        </form>
+    </div>
+
+    <div class="container mt-3">
+        <div class="mb-3">
+            <label for="playlist" class="form-label text-white "> scegli la tua playlist </label>
+            <input type="text" class="form-control" id="scegliplaylist">
+            <label for="cercaCanzone" class="form-label text-white ">Cerca canzoni</label>
+            <input type="text" class="form-control" id="findCanzone" onkeyup="findcanzone()">
+        </div>
+        <div class="container mt-3">
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th> </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tr>
+                    <tbody>
+                        <tr id="results"> </tr>
+                    </tbody>
+                </tr>
+            </table>
+        </div>
+
+        <br>
+
+        <div class="container mt-3 text-black">
+            <table class="table ">
+                <h1 class="text-lg-center">Canzoni aggiunte</h1>
+                <thead>
+                    <tr>
+                        <th>Copertina</th>
+                        <th>Titolo</th>
+                        <th>Album</th>
+                        <th>Cantante</th>
+                        <th>Durata in minuti</th>
+                        <th>Anno di pubblicazione</th>
+                    </tr>
+                </thead>
+
+                <tbody id="stampaPlaylist">
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</body>
+
+
+
+
+
+
+
+
+<script>
+
+    const utente = JSON.parse(getUtenteAttivo());
+    utenti = JSON.parse(window.localStorage.getItem('utenti'))
+    profilo = document.getElementById('profilo')
+
+    profilo.innerHTML += utente.nome
+
+
+
+
+    function search(find) {
+        return SearchTrack(find)
+    }
+    function findcanzone(find) {
+        var tbody = document.getElementById('results')
+        tbody.innerHTML = ""
+        var find = document.getElementById('findCanzone').value
+        if (find.length > 3) {
+            search(find).then(json => {
+                console.log(json)
+                json.tracks.items.forEach(track => {
+                    durata = Math.round((track.duration_ms / 60000) * 100) / 100
+                    //  tbody.innerHTML += "<tr class=" + "evid" + "><td><img src='" + track.album.images[2].url + "'></td><td>" + track.name + "</td><td>" + track.album.name + "</td><td>" + track.artists[0].name + "</td><td>" + durata + "</td><td>" + track.album.release_date + "</td><td><button class=" + "'btn btn-success btn-xs'" + " onclick=" + "aggiungi(\"" + track.id + "," + track.duration_ms + "\")" + ">AGGIUNGI</button></td></tr>"
+                    tbody.innerHTML += " <td> <div class=" + "card" + " style=" + "width:" + "12rem;>" + "<img src=" + track.album.images[1].url + " class=" + "card-img-top" + "alt=" + ">" + "<div class=" + "card-body>" + " <h5 class=" + "card-title" + "id=" + "titolo>titolo: " + track.name + "</h5>" + "<h6 class=" + "card-title" + "id=" + "album>Album: " + track.album.name + " </h6> <h6 class=" + "card-title" + "id=" + "cantante>cantante:" + track.artists[0].name + " </h6><h6 class=" + "card-title" + "id=" + "durata>durata:" + durata + " </h6><h6 class=" + "card-title" + "id=" + "anno>anno:" + track.album.release_date + " </h6><button class=" + "'btn btn-success btn-xs'" + " onclick=" + "aggiungi(\"" + track.id + "," + track.duration_ms + "\")" + ">AGGIUNGI</button></div></div></td>"
+                }
+                )
+            }
+            )
+        }
+    }
+
+    function aggiungi(text) {
+
+        var array = text.split(",")
+        id = array[0]
+        durata = Math.round((array[1] / 60000) * 100) / 100
+        console.log(durata)
+        nome = document.getElementById('scegliplaylist').value.trim()
+
+        var inserisci = GetTrack(id)
+
+
+
+        playlist = GetPlaylist(utente.playlists, nome)
+        console.log(this.playlist)
+        if (GetPlaylist(utente.playlists, nome) != -1 && !TrovaCanzone(this.playlist, id)) {
+            console.log(TrovaCanzone(this.playlist, id))
+            window.alert("canzone aggiunta")
+
+            GetPlaylist(utente.playlists, nome).canzoni.push(id)
+            playlist.durata += durata
+            window.localStorage.setItem('active_user', JSON.stringify(utente))
+            AggiornaUtente()
+
+            inserisci.then(json => {
+                var stampaPlaylist = document.getElementById('stampaPlaylist')
+                durata = Math.round((json.duration_ms / 60000) * 100) / 100
+                stampaPlaylist.innerHTML += "<tr class=" + "evid" + "><td><img src='" + json.album.images[2].url + "'></td><td>" + json.name + "</td><td>" + json.album.name + "</td><td>" + json.artists[0].name + "</td><td>" + durata + "</td><td>" + json.album.release_date + "</td></tr>"
+            }
+
+            )
+
+        } else if (GetPlaylist(utente.playlists, nome) == -1) {
+            window.alert("Playlist non esistente")
+        } else if (TrovaCanzone(this.playlist, id)) {
+            window.alert("canzone già aggiunta")
+        }
+
+    }
+
+
+    function creaPlaylist() {
+
+        if (!TrovaNome(utente.playlists, document.getElementById('nomePlaylist').value)) {
+            nome = document.getElementById('nomePlaylist').value
+            descrizione = document.getElementById('descrizione').value
+
+
+
+            playlist = {
+                nomeUtente: utente.email,
+                nome: this.nome,
+                descrizione: this.descrizione,
+                durata: 0,
+                canzoni: [],
+                condivisa: "false",
+                comunità: "false"
+            }
+
+
+            utente.playlists.push(playlist)
+
+            window.localStorage.setItem('active_user', JSON.stringify(utente))
+            alert('playlist creata')
+            AggiornaUtente();
+        } else {
+            window.alert("Playlist già esistente")
+        }
+    }
+
+</script>
+
+</html>

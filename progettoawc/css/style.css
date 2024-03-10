@@ -1,0 +1,101 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: url(sfondologin.jpg);
+    background-size:cover ;
+}
+.box{
+    width: 300px;
+    padding: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) ;
+    background-color: rgba(rgb(196, 30, 30), rgb(50, 173, 50), rgb(69, 69, 187));
+    text-align: center;
+
+}
+.box h1{
+    color: rgb(197, 243, 29);
+    text-transform: uppercase;
+    font-weight: 700;
+
+}
+.box input[type="text"], .box input[type="password"]{
+
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 3px solid #fbff00;
+    padding:14px 10px ;
+    width: 220px;
+    outline: none;
+    color: rgb(255, 255, 255);
+    border-radius:24px ;
+    transition: 0.25px;
+}
+
+.box input[type="text"]:focus, .box input[type="password"]:focus{
+
+    width: 270px;
+    border-color: #ffc400ec;
+
+}
+.box input[type="button"]{
+
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 3px solid #ffc400ec;
+    padding:14px 10px ;
+    outline: none;
+    color: white;
+    border-radius:24px ;
+    transition: 0.25px;
+    cursor: pointer;
+
+}
+
+.box input[type="button"]:hover{
+    background: #ffc400ec;
+}
+
+.box p{
+    color: #000000;
+}
+.boxer{
+    width: 300px;
+    padding: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) ;
+    background-color: rgba(rgb(196, 30, 30), rgb(50, 173, 50), rgb(69, 69, 187));
+    text-align: center;
+}
+.boxer [type="text"], .boxer  [type="password"], .boxer [type="email"], .boxer [type="date"] {
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 3px solid #dd15b2;
+    padding:5px 10px ;
+    width: 220px;
+    outline: none;
+    color: white;
+    border-radius:24px ;
+    transition: 0.25px;
+}
+.boxer [type="text"]:focus, .boxer  [type="password"]:focus, .boxer [type="email"]:focus, .boxer [type="date"]:focus {
+    width: 270px;
+    border-color: #ffc400ec;
+}
+
+
+

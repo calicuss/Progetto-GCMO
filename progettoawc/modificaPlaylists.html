@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- <link rel="stylesheet" href="./css/style.css"> -->
+    <script src="./js/registrazione.js"></script>
+    <script src="./js/AccessToken.js"></script>
+    <script src="./js/functions.js"></script>
+    <script src="https://kit.fontawesome.com/9a13ec74f3.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    <title>modifica playlist</title>
+
+
+</head>
+
+<body onload="stampaPlaylist(), completaForm()">
+    <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark ">
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page">
+                        <i class="fa-solid fa-music"></i> </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./PaginaPersonale.html" id="profilo"> <i class="fa-solid fa-user"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./home.html"> <i class="fa-sharp fa-solid fa-house-user"></i> Home </i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./cerca playlist.html"><i class="fa-solid fa-plus"></i> Crea Playlist </i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./playlistPubbliche.html"><i class="fas fa-globe-europe"></i> Playlist
+                        Pubbliche </i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./playlistPubbliche.html"><i class="fas fa-globe-europe"></i> Playlist
+                        Pubbliche </i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./comunità.html"><i class="fas fa-globe-europe"></i>
+                      comunità </i>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="./amici.html"><i class="fas fa-globe-europe"></i>
+                      i miei amici </i>
+                    </a>
+                  </li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <div class="container mt-3">
+    <div class="container-fluid titolo">
+        <p class="text-center fs-1 fw-bold" >modifica:</p>
+
+        <p class="text-center fs-1 fw-bold" id="nome">   </p>
+    </div>
+    <div class="container mt-3">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>copertina</th>
+                    <th>nome</th>
+                    <th>album</th>
+                    <th>artista</th>
+                    <th>durara in minuti</th>
+                    <th>data pubblicazione</th>
+                </tr>
+            </thead>
+            <tbody id="modifica"></tbody>
+
+        </table>
+    </div>
+
+    <div class="container mt-3">
+        <form>
+            <div class="input-group input-group-lg">
+                <span class="input-group-text" id="inputGroup-sizing-lg"> modifica Nome Playlist</span>
+                <input type="text" id="modificanomePlaylist" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-lg">
+            </div>
+            <br>
+            <div class="input-group input-group-lg">
+                <span class="input-group-text" id="inputGroup-sizing-lg">modifica descrizione</span>
+                <input type="text" id="modificadescrizione" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-lg">
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary d-grid gap-2 col-6 mx-auto" onclick="salvaPlaylist()">salva modifiche</button>
+            <br>
+        </form>
+    </div>
+
+    <div class="container-fluid titolo">
+        <p class="text-center fs-1 fw-bold">aggiungi canzoni </p>
+        <div class="mb-3">
+            <label for="cercaCanzone" class="form-label text-white ">Cerca canzoni</label>
+            <input type="text" class="form-control" id="findCanzone" onkeyup="findcanzone()">
+        </div>
+    </div>
+    <div class="container mt-3">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>copertina</th>
+                    <th>nome</th>
+                    <th>album</th>
+                    <th>artista</th>
+                    <th>durara in minuti</th>
+                    <th>data pubblicazione</th>
+                </tr>
+            </thead>
+            <tbody id="canzoni"></tbody>
+
+        </table>
+    </div>
+</div>
+
+</body>
+
+
+<script>
+
+    utente = JSON.parse(getUtenteAttivo())
+    profilo = document.getElementById('profilo')
+    profilo.innerHTML += utente.nome
+
+    var urlpagina = window.location.href.toString();
+    
+
+    var url_param = new URL(urlpagina)
+    var nomePlaylist = url_param.searchParams.get("nomePlaylist")
+    var playlist = GetPlaylist(utente.playlists, nomePlaylist)
+
+
+
+    nome.innerHTML +=  nomePlaylist + "     <button class=" + "'btn btn-danger btn-xs'" + " id=" + "cancellaPlaylist" + " onclick=" + "'eliminaPlaylist(); location.href= \"home.html\"'" + ">ELIMINA PLAYLIST</button>"
+
+    function stampaPlaylist(){
+                for(var i =0; i < playlist.canzoni.length; i++){
+                    var request = GetTrack(playlist.canzoni[i])
+                    
+                    request.then(json =>{
+                        durata = Math.round((json.duration_ms/60000) * 100) / 100
+                        modifica.innerHTML += "<tr class="+"evid"+"><td><img src='" + json.album.images[2].url + "'></td><td>" + json.name + "</td><td>" + json.album.name + "</td><td>" + json.artists[0].name + "</td><td>" + durata + "</td><td>" + json.album.release_date + "</td><td><button class="+"'btn btn-danger btn-xs'"+" onclick="+"elimina(\""+ json.id +","+ json.duration_ms +"\")"+">RIMUOVI</button></td></tr>"                    })
+                }
+      }
+
+      function search(find) {
+        return SearchTrack(find)
+    }
+    function findcanzone(find) {
+        var tbody = document.getElementById('canzoni')
+        tbody.innerHTML = ""
+        var find = document.getElementById('findCanzone').value
+        if (find.length > 3) {
+            search(find).then(json => {
+                console.log(json)
+                json.tracks.items.forEach(track => {
+                    durata = Math.round((track.duration_ms / 60000) * 100) / 100
+                    console.log(track)
+                     tbody.innerHTML += "<tr class=" + "evid" + "><td><img src='" + track.album.images[2].url + "'></td><td>" + track.name + "</td><td>" + track.album.name + "</td><td>" + track.artists[0].name + "</td><td>" + durata + "</td><td>" + track.album.release_date + "</td><td><button class=" + "'btn btn-success btn-xs'" + " onclick=" + "aggiungi(\"" + track.id + "," + track.duration_ms + "\")" + ">AGGIUNGI</button></td></tr>"
+                    // tbody.innerHTML += " <td> <div class=" + "card" + " style=" + "width:" + "12rem;>" + "<img src=" + track.album.images[1].url + " class=" + "card-img-top" + "alt=" + ">" + "<div class=" + "card-body>" + " <h5 class=" + "card-title" + "id=" + "titolo>titolo: " + track.name + "</h5>" + "<h6 class=" + "card-title" + "id=" + "album>Album: " + track.album.name + " </h6> <h6 class=" + "card-title" + "id=" + "cantante>cantante:" + track.artists[0].name + " </h6><h6 class=" + "card-title" + "id=" + "durata>durata:" + durata + " </h6><h6 class=" + "card-title" + "id=" + "anno>anno:" + track.album.release_date + " </h6><button class=" + "'btn btn-success btn-xs'" + " onclick=" + "aggiungi(\"" + track.id + "," + track.duration_ms + "\")" + ">AGGIUNGI</button></div></div></td>"
+                }
+                )
+            }
+            )
+        }
+    }
+
+    function aggiungi(text) {
+
+var array = text.split(",")
+id = array[0]
+durata = Math.round((array[1] / 60000) * 100) / 100
+
+var inserisci = GetTrack(id)
+
+
+if (!TrovaCanzone(this.playlist, id)) {
+    window.alert("canzone aggiunta")
+    nome= document.getElementById("modificanomePlaylist").value
+    GetPlaylist(utente.playlists, nome).canzoni.push(id)
+    playlist.durata += durata
+    window.localStorage.setItem('active_user', JSON.stringify(utente))
+    AggiornaUtente()
+    
+    inserisci.then(json => {
+        var stampaPlaylist = document.getElementById('modifica')
+        durata = Math.round((json.duration_ms / 60000) * 100) / 100
+        stampaPlaylist.innerHTML += "<tr class=" + "evid" + "><td><img src='" + json.album.images[2].url + "'></td><td>" + json.name + "</td><td>" + json.album.name + "</td><td>" + json.artists[0].name + "</td><td>" + durata + "</td><td>" + json.album.release_date + "</td><td><button class="+"'btn btn-danger btn-xs'"+" onclick="+"elimina(\""+ json.id +","+ json.duration_ms +"\")"+">RIMUOVI</button></td></tr>"
+    }
+
+    )
+
+} else if (GetPlaylist(utente.playlists, nome) == -1) {
+    window.alert("Playlist non esistente")
+} else if (TrovaCanzone(this.playlist, id)) {
+    window.alert("canzone già aggiunta")
+}
+
+}
+
+
+function elimina(text){
+        var array = text.split(",")
+        id = array[0]
+        durata = Math.round((array[1]/60000)*100)/100
+        var canzoni = playlist.canzoni
+        const index = canzoni.indexOf(id);
+        
+        if (index > -1) {
+          playlist.durata -= durata
+          canzoni.splice(index, 1); 
+          window.localStorage.setItem('active_user', JSON.stringify(utente))
+          AggiornaUtente()
+          location.reload()
+        }
+
+      }
+
+      function eliminaPlaylist(){
+        
+        const index = utente.playlists.indexOf(playlist)
+        console.log(index)
+        if (index > -1) {
+        utente.playlists.splice(index, 1); 
+          window.localStorage.setItem('active_user', JSON.stringify(utente))
+          AggiornaUtente()
+          window.alert("Playlist elminata!")
+          
+        }
+      }
+
+      function completaForm(){
+        document.getElementById("modificanomePlaylist").value  = playlist.nome
+        document.getElementById("modificadescrizione").value = playlist.descrizione
+        
+      }
+    
+      function salvaPlaylist(){
+        var playlistsDaPassare = []
+        for(var i=0; i<Object.keys(utente.playlists).length; i++){
+          if(utente.playlists[i].nome != document.getElementById('modificanomePlaylist').value){
+            playlistsDaPassare.push(utente.playlists[i])
+          }
+        }
+        if(!TrovaNome(playlistsDaPassare, document.getElementById('modificanomePlaylist').value)){
+          playlist.nome = document.getElementById("modificanomePlaylist").value
+          playlist.descrizione = document.getElementById("modificadescrizione").value
+          window.localStorage.setItem('active_user', JSON.stringify(utente))
+          alert('modifica salvata')
+          AggiornaUtente()
+          location.href="home.html"
+        } else {
+          window.alert("Impossibile creare la playlist, nome gia' usato")
+        }
+        
+      }
+      
+
+</script>
